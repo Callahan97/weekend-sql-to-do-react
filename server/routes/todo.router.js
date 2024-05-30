@@ -33,7 +33,33 @@ router.post('/', (req, res) => {
     })
 });
 // PUT
-
+router.put('/toggle/:id', (req, res) => {
+    let {id} = req.params;
+    const sqlText = `
+    UPDATE "tasks" SET "completed" = NOT "completed"
+    WHERE "id" = $1;
+    `;
+    pool.query(sqlText, [id])
+    .then((result) => {
+        res.sendStatus(201);
+    })
+    .catch((error) => {
+        console.log(`Error making database query ${sqlText}`, error);
+        res.sendStatus(500);
+    })
+});
 // DELETE
-
+router.delete('/:id', (req, res) => {
+    let {id} = req.params;
+    const sqlText = `DELETE FROM "tasks" WHERE "id" = $1;`;
+    pool.query(sqlText, [id])
+    .then((result) => {
+        console.log(`Got Confirmation back from database`, result);
+        res.sendStatus(201);
+    })
+    .catch((error) => {
+        console.log(`Error making database query ${sqlText}`, error);
+        res.sendStatus(500);
+    })
+})
 module.exports = router;
