@@ -21,19 +21,30 @@ const [taskList, setTaskList] = useState([]);
 useEffect(fetchTasks, []);
 
 // Will use later
-// const [newTaskName, setNewTaskName] = useState('');
-// const [newTaskLocation, setNewTaskLocation] = useState('');
+const [newTaskName, setNewTaskName] = useState('');
+const [newTaskLocation, setNewTaskLocation] = useState('');
 
 const addTask = (event) => {
   event.preventDefault();
 
   axios({
-    method:
-    url:
+    method: 'POST',
+    url: '/api/task',
+    data:{
+      name: newTaskName,
+      location: newTaskLocation
+    }
+  })
+  .then ((response) => {
+    console.log('successful post:', response);
+    fetchTasks();
+    setNewTaskName('');
+    setNewTaskLocation('');
+  })
+  .catch((error) => {
+    console.log('post failed', error);
   })
 }
-
-
 
 
 
