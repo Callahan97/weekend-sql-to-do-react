@@ -1,11 +1,15 @@
 import {useEffect, useState} from 'react';
 import axios from 'axios';
+
+import './App.css';
+
 function App () {
+  
   
 const fetchTasks = () => {
   axios({
     method: 'GET',
-    url: '/api/tasks'
+    url: '/api/todo'
   }).then((response) => {
     console.log(response);
     console.log(response.data);
@@ -29,7 +33,7 @@ const addTask = (event) => {
 
   axios({
     method: 'POST',
-    url: '/api/task',
+    url: '/api/todo',
     data:{
       name: newTaskName,
       location: newTaskLocation
@@ -47,7 +51,7 @@ const addTask = (event) => {
 }
 
 const deleteTask = (id) => {
-  axios.delete(`/api/task/${id}`)
+  axios.delete(`/api/todo/${id}`)
   .then((response) => {
     console.log('deleting task worked:', response);
     fetchTasks();
@@ -60,7 +64,7 @@ const deleteTask = (id) => {
 const toggleTask = (id) => {
   console.log('toggling', id);
 
-  axios.put(`/api/task/toggle/${id}`)
+  axios.put(`/api/todo/toggle/${id}`)
   .then((response) => {
     console.log('toggling creature worked:', response);
     fetchTasks();
@@ -84,6 +88,24 @@ const toggleTask = (id) => {
   return (
     <div>
       <h1>TO DO Checklist</h1>
+
+      <h2>Add a task</h2>
+      <form onSubmit={addTask}>
+
+        <label htmlFor="name">Name:</label>
+        <input id="name" onChange={(event) => setNewTaskName(event.target.value)} value={newTaskName} />
+        <br/>
+        <br/>
+        <label htmlFor='location'>Location:</label>
+        <input id="location" onChange={(event) => setNewTaskLocation(event.target.value)} value={newTaskLocation}/>
+
+        <button type='submit'>Add new task</button>
+      </form>
+
+      <h2>Tasks</h2>
+      <ul>
+        {taskList.map((task) =>{return (<li key={task.name} className={task.completed? 'completed' : 'standard'}>{task.name} in {task.location} <button onClick={() => deleteTask(task.id)}>Delete</button> <button onClick={() => toggleTask(task.id)}>Complete</button> </li>); })}
+      </ul>
     </div>
   );
 

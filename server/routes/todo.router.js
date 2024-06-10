@@ -4,17 +4,17 @@ const pool = require('../modules/pool.js');
 
 // GET
 router.get('/', (req, res) =>{
-    const sqlText =`SELECT * FROM tasks ORDER BY name, location DESC;`;
+    const sqlText =`SELECT * FROM tasks ORDER BY name ASC, location DESC;`;
     pool.query(sqlText)
     .then((result) => {
-        console.log(`Got tasks info back from database`, result);
+        console.log(`Got tasks info back from database`, result.rows);
         res.send(result.rows);
     })
     .catch((error) => {
         console.log(`Error making database query ${sqlText}`, error);
         res.sendStatus(500);
-    })
-})
+    });
+});
 // POST
 router.post('/', (req, res) => {
     const task = req.body;
@@ -30,14 +30,14 @@ router.post('/', (req, res) => {
     .catch((error) => {
         console.log(`Error making database query ${sqlText}`, error);
         res.sendStatus(500);
-    })
+    });
 });
 // PUT
 router.put('/toggle/:id', (req, res) => {
     let {id} = req.params;
     const sqlText = `
-    UPDATE "tasks" SET "completed" = NOT "completed"
-    WHERE "id" = $1;
+    UPDATE tasks SET completed = NOT completed
+    WHERE id = $1;
     `;
     pool.query(sqlText, [id])
     .then((result) => {
@@ -46,7 +46,7 @@ router.put('/toggle/:id', (req, res) => {
     .catch((error) => {
         console.log(`Error making database query ${sqlText}`, error);
         res.sendStatus(500);
-    })
+    });
 });
 // DELETE
 router.delete('/:id', (req, res) => {
@@ -60,6 +60,6 @@ router.delete('/:id', (req, res) => {
     .catch((error) => {
         console.log(`Error making database query ${sqlText}`, error);
         res.sendStatus(500);
-    })
-})
+    });
+});
 module.exports = router;
