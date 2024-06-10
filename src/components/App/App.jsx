@@ -46,9 +46,29 @@ const addTask = (event) => {
   })
 }
 
+const deleteTask = (id) => {
+  axios.delete(`/api/task/${id}`)
+  .then((response) => {
+    console.log('deleting task worked:', response);
+    fetchTasks();
+  })
+  .catch(function(error) {
+    console.log(error)
+  })
+}
 
+const toggleTask = (id) => {
+  console.log('toggling', id);
 
-
+  axios.put(`/api/task/toggle/${id}`)
+  .then((response) => {
+    console.log('toggling creature worked:', response);
+    fetchTasks();
+  })
+  .catch(function(error) {
+    console.log(error);
+  })
+}
 
 
 
