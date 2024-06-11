@@ -72,16 +72,7 @@ const toggleTask = (id) => {
   .catch(function(error) {
     console.log(error);
   })
-}
-
-
-
-
-
-
-
-
-
+};
 
 
 
@@ -93,19 +84,34 @@ const toggleTask = (id) => {
       <form onSubmit={addTask}>
 
         <label htmlFor="name">Name:</label>
-        <input id="name" onChange={(event) => setNewTaskName(event.target.value)} value={newTaskName} />
+        <input id="name" onChange={(event) => setNewTaskName(event.target.value)} 
+        value={newTaskName} />
         <br/>
         <br/>
         <label htmlFor='location'>Location:</label>
-        <input id="location" onChange={(event) => setNewTaskLocation(event.target.value)} value={newTaskLocation}/>
-
+        <input id="location" onChange={(event) => setNewTaskLocation(event.target.value)} 
+        value={newTaskLocation}/>
+        
+        <br/>
         <button type='submit'>Add new task</button>
       </form>
 
       <h2>Tasks</h2>
       <ul>
-        {taskList.map((task) =>{return (<li key={task.name} className={task.completed? 'completed' : 'standard'}>{task.name} in {task.location} <button onClick={() => deleteTask(task.id)}>Delete</button> <button onClick={() => toggleTask(task.id)}>Complete</button> </li>); })}
-      </ul>
+                {taskList.map((task) => (
+                    <li key={task.id} className={task.completed ? 'completed' : 'standard'}>
+                        {task.name} in {task.location}
+                        <div>
+                            <button className="complete" onClick={() => toggleTask(task.id)}>
+                                {task.completed ? 'Undo' : 'Complete'}
+                            </button>
+                            <button className="delete" onClick={() => deleteTask(task.id)}>
+                                Delete
+                            </button>
+                        </div>
+                    </li>
+                ))}
+            </ul>
     </div>
   );
 
