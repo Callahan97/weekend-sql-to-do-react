@@ -93,6 +93,7 @@ const toggleTask = (id) => {
         value={newTaskLocation}/>
         
         <br/>
+        <br/>
         <button type='submit'>Add new task</button>
       </form>
 
